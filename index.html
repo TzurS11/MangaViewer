@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="jszip.min.js"></script>
+    <title>MangaViewer</title>
+    <style>
+        #inputListFILE {
+            margin-left: 10px;
+        }
+    </style>
+    <script>
+        async function submitURLS() {
+
+            const inputURL = document.getElementById("inputListURL")
+            let imagesURL = inputURL.value.replace(/[\[|\]|"|']/g, "").split(",").map(x => x.trim())
+            if (imagesURL.length == 1 && imagesURL[0] == '') return;
+            for (let i = 0; i < imagesURL.length; i++) {
+                try {
+                    let img = document.createElement("img");
+                    img.style.display = "block"
+                    img.src = imagesURL[i]
+                    img.style.width = "75%"
+                    img.class = "mangaImg";
+                    document.body.appendChild(img)
+                } catch (e) { }
+            }
+            // inputURL.value = ""
+        }
+        function submitFILE() {
+            const files = document.getElementById("inputListFILE").files
+            for (let i = 0; i < files.length; i++) {
+
+                const fileExtension = files[i].name.split(".")[files[i].name.split(".").length - 1]
+                if (fileExtension == "zip") {
+                    // Initialize a FileReader to read the ZIP file
+                    const zipReader = new FileReader();
+
+                    // Set up an event handler for when the FileReader has loaded the ZIP file
+                    zipReader.onload = function (event) {
+                        // Use a library like JSZip to extract the images from the ZIP file
+                        JSZip.loadAsync(event.target.result)
+                            .then(function (zip) {
+                                // Assuming all images are in the root of the ZIP file
+                                const imagePromises = [];
+                                zip.forEach(function (relativePath, zipEntry) {
+                                    // Check if the entry is a file (not a directory)
+                                    if (!zipEntry.dir) {
+                                        // Load each image file as a data URL
+                                        const imagePromise = zipEntry.async('blob').then(function (blob) {
+                                            return new Promise(function (resolve) {
+                                                const reader = new FileReader();
+                                                reader.onload = function (event) {
+                                                    resolve(event.target.result);
+                                                };
+                                                reader.readAsDataURL(blob);
+                                            });
+                                        });
+
+                                        imagePromises.push(imagePromise);
+                                    }
+                                });
+
+                                // Wait for all image promises to resolve
+                                Promise.all(imagePromises).then(function (imageDataUrls) {
+                                    // Display all images in separate img elements
+                                    for (const imageDataUrl of imageDataUrls) {
+                                        const img = document.createElement("img");
+                                        img.style.display = "block";
+                                        img.src = imageDataUrl;
+                                        img.style.width = "75%";
+                                        img.classList.add("mangaImg"); // Use classList to add a class
+                                        document.body.appendChild(img);
+                                    }
+                                });
+                            });
+                    };
+
+                    // Read the selected ZIP file as an ArrayBuffer
+                    zipReader.readAsArrayBuffer(files[i]);
+                } else {
+
+                    const reader = new FileReader();
+
+                    reader.onload = function (event) {
+                        let img = document.createElement("img");
+                        img.style.display = "block"
+                        img.src = event.target.result
+                        img.style.width = "75%"
+                        img.class = "mangaImg";
+                        document.body.appendChild(img)
+
+                    };
+
+                    // Read the selected file as a data URL
+                    reader.readAsDataURL(files[i]);
+                }
+
+            }
+        }
+        document.addEventListener("input", function (evt) {
+            if (evt.srcElement.id == "imgsWidth") {
+                let images = document.getElementsByClassName("mangaImg");
+                for (let i = 0; i < images.length; i++) {
+                    images.item(i).style.width = document.getElementById("imgsWidth").value + "%"
+                }
+            }
+        })
+    </script>
+</head>
+
+<body>
+    <input type="text" name="" placeholder="image urls separated by ','" id="inputListURL">
+    <!-- <button type="submit" value="add" id="submitURL"> -->
+    <button id="submitURL" onclick="submitURLS()">Add image(s)</button>
+    <input type="file" name="" id="inputListFILE" accept=".zip,.jpg,.png,.jpeg" multiple>
+    <button id="submitFILE" onclick="submitFILE()">Add file(s)</button>
+    <p style="display: inline; margin-left: 30px;">image width</p>
+    <input style="margin-bottom: 20px;" type="range" min="1" max="100" value="75" id="imgsWidth">
+
+</body>
+
+</html>
