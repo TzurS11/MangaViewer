@@ -7,6 +7,13 @@
     <script src="jszip.min.js"></script>
     <title>MangaViewer</title>
     <style>
+        .container {
+            overflow: hidden;
+            white-space: nowrap;
+            display: inline;
+            /* Adjust to your preferred height */
+        }
+
         #inputListFILE {
             margin-left: 10px;
         }
@@ -108,18 +115,33 @@
                 }
             }
         })
+        function clearImgs() {
+            const elementsToRemove = document.querySelectorAll('.mangaImg');
+
+            // Loop through the elements and remove them
+            elementsToRemove.forEach((element) => {
+                element.remove();
+            });
+        }
     </script>
 </head>
 
 <body>
-    <input type="text" name="" placeholder="image urls separated by ','" id="inputListURL">
-    <!-- <button type="submit" value="add" id="submitURL"> -->
-    <button id="submitURL" onclick="submitURLS()">Add image(s)</button>
-    <input type="file" name="" id="inputListFILE" accept=".zip,.jpg,.png,.jpeg" multiple>
-    <button id="submitFILE" onclick="submitFILE()">Add file(s)</button>
-    <p style="display: inline; margin-left: 30px;">image width</p>
-    <input style="margin-bottom: 20px;" type="range" min="1" max="100" value="75" id="imgsWidth">
-
+    <div class="container">
+        <input type="text" name="" placeholder="image urls separated by ','" id="inputListURL">
+        <button id="submitURL" onclick="submitURLS()">Add image(s)</button>
+    </div>
+    <div class="container">
+        <input type="file" name="" id="inputListFILE" accept=".zip,.jpg,.png,.jpeg" multiple>
+        <button id="submitFILE" onclick="submitFILE()">Add file(s)</button>
+    </div>
+    <div class="container">
+        <p style="display: inline; margin-left: 30px;">image width</p>
+        <input style="margin-bottom: 20px;" type="range" min="1" max="100" value="75" id="imgsWidth">
+    </div>
+    <div class="container">
+        <button style=" margin-left: 30px;" id="submitFILE" onclick="clearImgs()">clear images</button>
+    </div>
 </body>
 
 </html>
