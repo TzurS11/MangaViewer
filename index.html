@@ -10,12 +10,19 @@
         .container {
             overflow: hidden;
             white-space: nowrap;
-            display: inline;
+            display: inline-block;
+            margin-top: 10px;
+            margin-left: 10px;
             /* Adjust to your preferred height */
         }
 
         #inputListFILE {
-            margin-left: 10px;
+            /* margin-left: 10px; */
+        }
+
+        body {
+            margin: 0;
+            width: 100%
         }
     </style>
     <script>
@@ -30,8 +37,8 @@
                     img.style.display = "block"
                     img.src = imagesURL[i]
                     img.style.width = "75%"
-                    img.class = "mangaImg";
-                    document.body.appendChild(img)
+                    img.classList.add("mangaImg");
+                    document.getElementById("MangaImages").appendChild(img)
                 } catch (e) { }
             }
             // inputURL.value = ""
@@ -79,7 +86,7 @@
                                         img.src = imageDataUrl;
                                         img.style.width = "75%";
                                         img.classList.add("mangaImg"); // Use classList to add a class
-                                        document.body.appendChild(img);
+                                        document.getElementById("MangaImages").appendChild(img);
                                     }
                                 });
                             });
@@ -127,21 +134,25 @@
 </head>
 
 <body>
-    <div class="container">
-        <input type="text" name="" placeholder="image urls separated by ','" id="inputListURL">
-        <button id="submitURL" onclick="submitURLS()">Add image(s)</button>
+    <div id="controls">
+        <div class="container">
+            <input type="text" name="" placeholder="image urls separated by ','" id="inputListURL">
+            <button id="submitURL" onclick="submitURLS()">Add image(s)</button>
+        </div>
+        <div class="container">
+            <input type="file" name="" id="inputListFILE" accept=".zip,.jpg,.png,.jpeg" multiple>
+            <button id="submitFILE" onclick="submitFILE()">Add file(s)</button>
+        </div>
+        <div class="container">
+            <p style="display: inline; ">image width</p>
+            <input type="range" min="1" max="100" value="75" id="imgsWidth">
+        </div>
+        <div class="container">
+            <button id="submitFILE" onclick="clearImgs()">clear images</button>
+        </div>
     </div>
-    <div class="container">
-        <input type="file" name="" id="inputListFILE" accept=".zip,.jpg,.png,.jpeg" multiple>
-        <button id="submitFILE" onclick="submitFILE()">Add file(s)</button>
-    </div>
-    <div class="container">
-        <p style="display: inline; margin-left: 30px;">image width</p>
-        <input style="margin-bottom: 20px;" type="range" min="1" max="100" value="75" id="imgsWidth">
-    </div>
-    <div class="container">
-        <button style=" margin-left: 30px;" id="submitFILE" onclick="clearImgs()">clear images</button>
-    </div>
+    <div id="MangaImages"></div>
+
 </body>
 
 </html>
