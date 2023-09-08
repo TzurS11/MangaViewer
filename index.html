@@ -7,6 +7,10 @@
     <script src="jszip.min.js"></script>
     <title>MangaViewer</title>
     <style>
+        body {
+            background-color: rgb(58, 58, 58);
+        }
+
         .container {
             overflow: hidden;
             white-space: nowrap;
@@ -16,8 +20,17 @@
             /* Adjust to your preferred height */
         }
 
+        #inputListURL {
+            color: black;
+        }
+
+        #inputListURL::placeholder {
+            color: black;
+        }
+
         #inputListFILE {
             /* margin-left: 10px; */
+            color: white;
         }
 
         body {
@@ -144,7 +157,7 @@
             <button id="submitFILE" onclick="submitFILE()">Add file(s)</button>
         </div>
         <div class="container">
-            <p style="display: inline; ">image width</p>
+            <p style="display: inline;color: white; ">image width</p>
             <input type="range" min="1" max="100" value="75" id="imgsWidth">
         </div>
         <div class="container">
