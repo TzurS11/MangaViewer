@@ -9,6 +9,8 @@
     <style>
         body {
             background-color: rgb(58, 58, 58);
+            margin: 0;
+            width: 100%
         }
 
         .container {
@@ -17,6 +19,8 @@
             display: inline-block;
             margin-top: 10px;
             margin-left: 10px;
+            margin-bottom: 10px;
+            
             /* Adjust to your preferred height */
         }
 
@@ -33,13 +37,25 @@
             color: white;
         }
 
-        body {
-            margin: 0;
-            width: 100%
+
+        #scrollToTop {
+            margin-top: 10px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            position: fixed;
+            bottom: 0;
+            right:0;
         }
     </style>
     <script>
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+            });
+        }
+
         async function submitURLS() {
+            scrollToBottomSlowly()
 
             const inputURL = document.getElementById("inputListURL")
             let imagesURL = inputURL.value.replace(/[\[|\]|"|']/g, "").split(",").map(x => x.trim())
@@ -116,8 +132,8 @@
                         img.style.display = "block"
                         img.src = event.target.result
                         img.style.width = "75%"
-                        img.class = "mangaImg";
-                        document.body.appendChild(img)
+                        img.classList.add("mangaImg");
+                        document.getElementById("MangaImages").appendChild(img)
 
                     };
 
@@ -165,6 +181,7 @@
         </div>
     </div>
     <div id="MangaImages"></div>
+    <button id="scrollToTop" onclick="scrollToTop()">Scroll To Top</button>
 
 </body>
 
