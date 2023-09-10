@@ -55,8 +55,6 @@
         }
 
         async function submitURLS() {
-            scrollToBottomSlowly()
-
             const inputURL = document.getElementById("inputListURL")
             let imagesURL = inputURL.value.replace(/[\[|\]|"|']/g, "").split(",").map(x => x.trim())
             if (imagesURL.length == 1 && imagesURL[0] == '') return;
