@@ -20,7 +20,7 @@
             margin-top: 10px;
             margin-left: 10px;
             margin-bottom: 10px;
-            
+
             /* Adjust to your preferred height */
         }
 
@@ -44,17 +44,18 @@
             margin-bottom: 10px;
             position: fixed;
             bottom: 0;
-            right:0;
+            right: 0;
         }
     </style>
-    <script>
+    <script defer>
+
         function scrollToTop() {
             window.scrollTo({
                 top: 0,
             });
         }
 
-        async function submitURLS() {
+        function submitURLS() {
             const inputURL = document.getElementById("inputListURL")
             let imagesURL = inputURL.value.replace(/[\[|\]|"|']/g, "").split(",").map(x => x.trim())
             if (imagesURL.length == 1 && imagesURL[0] == '') return;
@@ -68,7 +69,6 @@
                     document.getElementById("MangaImages").appendChild(img)
                 } catch (e) { }
             }
-            // inputURL.value = ""
         }
         function submitFILE() {
             const files = document.getElementById("inputListFILE").files
@@ -157,6 +157,11 @@
                 element.remove();
             });
         }
+
+
+
+
+
     </script>
 </head>
 
@@ -180,6 +185,29 @@
     </div>
     <div id="MangaImages"></div>
     <button id="scrollToTop" onclick="scrollToTop()">Scroll To Top</button>
+    <script>
+        async function onLoad() {
+            let url_string = window.location.href;
+            let url = new URL(url_string);
+            let imageURLSparam = url.searchParams.get("imageURLS");
+            console.log(imageURLSparam)
+            let imagesURL = imageURLSparam.replace(/[\[|\]|"|']/g, "").split(",").map(x => x.trim())
+            if (imagesURL.length == 1 && imagesURL[0] == '') return;
+            for (let i = 0; i < imagesURL.length; i++) {
+                try {
+                    let img = document.createElement("img");
+                    img.style.display = "block"
+                    img.src = imagesURL[i]
+                    img.style.width = "75%"
+                    img.classList.add("mangaImg");
+                    document.getElementById("MangaImages").appendChild(img)
+                } catch (e) { }
+            }
+
+        }
+
+        onLoad()
+    </script>
 
 </body>
 
