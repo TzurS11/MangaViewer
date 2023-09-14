@@ -1,0 +1,16 @@
+{
+    "name": "MangaViewer",
+    "short_name": "MangaViewer",
+    "description": "View mangas that are locally stored inside a zip or from a list of image urls",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#111111",
+    "theme_color": "#111111",
+    "icons": [
+      {
+        "src": "/favicon.png",
+        "sizes": "90x90",
+        "type": "image/png"
+      }
+    ]
+  }
